@@ -13,7 +13,9 @@ public class Coordinator implements Runnable {
     // Emergency box object
 
     // Road 1 object
+    private Road northSouth;
     // Road 2 object
+    private Road eastWest;
 
     @Override
     public void run() {
@@ -26,6 +28,10 @@ public class Coordinator implements Runnable {
                 east_west.add(l);
             }
         }
+        northSouth.setRoads(north_south);
+        northSouth.setLightColor(SignalColor.RED);
+        eastWest.setRoads(east_west);
+        eastWest.setLightColor(SignalColor.RED);
 
         while(running) {
             // Timing Mode Logic
