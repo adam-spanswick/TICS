@@ -24,9 +24,9 @@ public class Coordinator implements Runnable {
     // Emergency box object
 
     // Road 1 object
-    private Road northSouth;
+    private Road northSouth = new Road();
     // Road 2 object
-    private Road eastWest;
+    private Road eastWest = new Road();
 
 
     private void waitlength(int seconds){
