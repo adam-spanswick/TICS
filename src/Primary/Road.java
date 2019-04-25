@@ -11,19 +11,21 @@ public class Road {
     public void setRoads(ArrayList<Lanes> lanes){
         this.lanes = lanes;
     }
-    private void waitlength(int seconds){
+    private void waitLength(int seconds){
         try {
             Thread.sleep(seconds * 1000);
         }catch (InterruptedException e){}
     }
-
+    public boolean anyCarsInTurnLane(){
+        return (lanes.get(0).isCarOnLane() || lanes.get(3).isCarOnLane());
+    }
     public void turnLightOn(){
         // turn lights green
     }
 
     public void turnLightOff(){
         // turn lights yellow
-        waitlength(YELLOW_LIGHT_LENGTH);
+        waitLength(YELLOW_LIGHT_LENGTH);
         // turn lights red
     }
 
@@ -33,7 +35,7 @@ public class Road {
 
     public void straightLightOff(){
         // turn lights yellow
-        waitlength(YELLOW_LIGHT_LENGTH);
+        waitLength(YELLOW_LIGHT_LENGTH);
         // turn lights red
     }
     public ArrayList<Lanes> getRoads(){
