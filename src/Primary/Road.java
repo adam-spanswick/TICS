@@ -3,6 +3,11 @@ package Primary;
 import java.util.ArrayList;
 
 public class Road {
+    public enum emergency{
+        STRAIGHT,
+        TURN,
+        NONE
+    }
 
     private ArrayList<Lanes> lanes = new ArrayList<>();
     private SignalColor lightColor;
@@ -34,6 +39,23 @@ public class Road {
     private void setTurnLightColor(SignalColor color){
         lanes.get(0).setColor(color);
         lanes.get(3).setColor(color);
+    }
+    public emergency checkForEmergancyVehicle(){
+        if(emergencyInStraight()){
+            return emergency.STRAIGHT;
+        }else if (emergencyInTurn()){
+            return emergency.TURN;
+        }else {
+            return emergency.NONE;
+        }
+    }
+    private boolean emergencyInStraight(){
+        return lanes.get(1).getEmergencyOnLane() || lanes.get(2).getEmergencyOnLane() ||
+                lanes.get(4).getEmergencyOnLane() || lanes.get(5).getEmergencyOnLane();
+    }
+
+    private boolean emergencyInTurn(){
+        return lanes.get(0).getEmergencyOnLane() || lanes.get(3).getEmergencyOnLane();
     }
 
     public void straightLightOn(){
@@ -72,9 +94,6 @@ public class Road {
         lanes.get(5).setColor(color);
     }
 
-    public ArrayList<Lanes> getRoads(){
-        return this.lanes;
-    }
 
     public void setAllLights(SignalColor color){
         for(Lanes l: lanes){
@@ -82,7 +101,4 @@ public class Road {
         }
     }
 
-    public SignalColor getLightColor(){
-        return this.lightColor;
-    }
 }
