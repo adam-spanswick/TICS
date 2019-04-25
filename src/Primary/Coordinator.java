@@ -14,9 +14,11 @@ public class Coordinator implements Runnable {
     private ArrayList<Lanes> north_south = new ArrayList<>();
     private ArrayList<Lanes> east_west = new ArrayList<>();
     private Boolean running = true;
+    private Boolean noEmergency;
     private lightSequences curSequence;
     private final int TURN_LIGHT_LENGTH = 3;
     private final int  STRAIGHT_LIGHT_LENGTH = 5;
+    private final int TIME_BETWEEN_SEQS = 1;
     // opticom receiver object
     // inductive loop object
     // Emergency box object
@@ -25,13 +27,17 @@ public class Coordinator implements Runnable {
     private Road northSouth;
     // Road 2 object
     private Road eastWest;
+
+
     private void waitlength(int seconds){
         try {
             Thread.sleep(seconds * 1000);
         }catch (InterruptedException e){}
     }
+
     @Override
     public void run() {
+        noEmergency = true;
 
         for(Lanes l: Lanes.values())
         {
@@ -50,45 +56,72 @@ public class Coordinator implements Runnable {
         while(running) {
             // Timing Mode Logic
             // If no opticom signal received or no emergency key detected => Enter normal mode
+            if(noEmergency) {
+                switch (curSequence) {
+                    case NORTH_SOUTH_TURN:
+                        // Turn Light To Green
+                        if (northSouth.anyCarsInTurnLane()) {
+                            northSouth.turnLightOn();
+
+                            // Wait For Light Duration
+                            waitlength(TURN_LIGHT_LENGTH);
+
+                            // Turn Light to Yellow then Red
+                            northSouth.turnLightOff();
+
+                        }
+                        // Set Next Sequence
+                        curSequence = lightSequences.NORTH_SOUTH;
+                        break;
+                    case NORTH_SOUTH:
+                        // Straight Lights to Green
+                        northSouth.straightLightOn();
+
+                        // Wait For Light Duration
+                        waitlength(STRAIGHT_LIGHT_LENGTH);
+
+                        // Straight Lights Yellow then Red
+                        northSouth.straightLightOff();
+
+                        curSequence = lightSequences.EAST_WEST_TURN;
+                        break;
+                    case EAST_WEST_TURN:
+                        // Turn Light To Green
+                        if (eastWest.anyCarsInTurnLane()) {
+                            eastWest.turnLightOn();
+
+                            // Wait For Light Duration
+                            waitlength(TURN_LIGHT_LENGTH);
+
+                            // Turn Light to Yellow then Red
+                            eastWest.turnLightOff();
+
+                        }
+                        // Set Next Sequence
+                        curSequence = lightSequences.EAST_WEST;
+                        break;
+                    case EAST_WEST:
+                        // Straight Lights to Green
+                        eastWest.straightLightOn();
+
+                        // Wait For Light Duration
+                        waitlength(STRAIGHT_LIGHT_LENGTH);
+
+                        // Straight Lights Yellow then Red
+                        eastWest.straightLightOff();
+
+                        curSequence = lightSequences.NORTH_SOUTH_TURN;
+                        break;
+                    default:
+                        System.out.println("light sequence missing");
+                }
+                // Wait For Light Duration
+                waitlength(TIME_BETWEEN_SEQS);
+            }
             // Else if opticom signal received => Enter emergency vehicle timing plan
             // Else if Emergency key turned => Enter emergency timing plan
             // If system failure => Enter system failure timing mode
-            switch (curSequence){
-                case NORTH_SOUTH_TURN:
-                    // set light
-                    // wait light duration
-                    curSequence = lightSequences.NORTH_SOUTH;
-                    break;
-                case NORTH_SOUTH:
-                    curSequence = lightSequences.EAST_WEST_TURN;
-                    break;
-                case EAST_WEST_TURN:
-                    curSequence = lightSequences.EAST_WEST;
-                    break;
-                case EAST_WEST:
-                    curSequence = lightSequences.NORTH_SOUTH_TURN;
-                    break;
-                    default:
-                        System.out.println("light sequence missing");
-            }
-
         }
-    }
-
-    private void NormalMode() {
-
-    }
-
-    private void EmergencyMode() {
-
-    }
-
-    private void EmerVehicleMode() {
-
-    }
-
-    private void SysFailureMode() {
-
     }
 
     public static void main(String[] args) {

@@ -43,7 +43,9 @@ public class Road {
     }
 
     public void setLightColor(SignalColor color){
-        this.lightColor = color;
+        for(Lanes l: lanes){
+            l.setColor(color);
+        }
     }
 
     public SignalColor getLightColor(){
