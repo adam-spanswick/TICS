@@ -92,7 +92,7 @@ class TestTCS extends Thread {
             {
                 l.setColor(east_west_color);
             }
-            Lights.WEST.setColor(SignalColor.GREEN);
+            Lights.EAST.setColor(SignalColor.GREEN);
             count ++;
 
 
