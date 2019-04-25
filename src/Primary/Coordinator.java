@@ -3,7 +3,7 @@ package Primary;
 import java.util.ArrayList;
 import java.util.Timer;
 
-public class Coordinator extends Thread{
+public class Coordinator implements Runnable {
     private SignalColor north_south_color, east_west_color;
     private ArrayList<Lanes> north_south = new ArrayList<>();
     private ArrayList<Lanes> east_west = new ArrayList<>();
@@ -15,7 +15,8 @@ public class Coordinator extends Thread{
     // Road 1 object
     // Road 2 object
 
-    public void Simulation(){
+    @Override
+    public void run() {
 
         for(Lanes l: Lanes.values())
         {
@@ -35,24 +36,24 @@ public class Coordinator extends Thread{
         }
     }
 
-    private void NormalMode(){
-        Timer timer = new Timer();
-    }
-
-    private void EmergencyMode(){
+    private void NormalMode() {
 
     }
 
-    private void EmerVehicleMode(){
+    private void EmergencyMode() {
 
     }
 
-    private void SysFailureMode(){
+    private void EmerVehicleMode() {
+
+    }
+
+    private void SysFailureMode() {
 
     }
 
     public static void main(String[] args) {
         Coordinator sim = new Coordinator();
-        sim.Simulation();
+        sim.run();
     }
 }
