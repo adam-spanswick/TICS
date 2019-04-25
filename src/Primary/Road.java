@@ -3,6 +3,7 @@ package Primary;
 import java.util.ArrayList;
 
 public class Road {
+    
     private ArrayList<Lanes> lanes = new ArrayList<>();
     private SignalColor lightColor;
 
