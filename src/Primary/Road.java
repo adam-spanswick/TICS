@@ -20,29 +20,46 @@ public class Road {
         return (lanes.get(0).isCarOnLane() || lanes.get(3).isCarOnLane());
     }
     public void turnLightOn(){
-        // turn lights green
+        setTurnLightColor(SignalColor.GREEN);
     }
 
     public void turnLightOff(){
         // turn lights yellow
+        setTurnLightColor(SignalColor.YELLOW);
         waitLength(YELLOW_LIGHT_LENGTH);
         // turn lights red
+        setTurnLightColor(SignalColor.RED);
+    }
+
+    private void setTurnLightColor(SignalColor color){
+        lanes.get(0).setColor(color);
+        lanes.get(3).setColor(color);
     }
 
     public void straightLightOn(){
-        // turn lights green
+        setStraightLightColor(SignalColor.GREEN);
     }
 
     public void straightLightOff(){
         // turn lights yellow
+        setStraightLightColor(SignalColor.YELLOW);
         waitLength(YELLOW_LIGHT_LENGTH);
         // turn lights red
+        setStraightLightColor(SignalColor.RED);
     }
+
+    private void setStraightLightColor(SignalColor color){
+        lanes.get(1).setColor(color);
+        lanes.get(2).setColor(color);
+        lanes.get(4).setColor(color);
+        lanes.get(5).setColor(color);
+    }
+
     public ArrayList<Lanes> getRoads(){
         return this.lanes;
     }
 
-    public void setLightColor(SignalColor color){
+    public void setAllLights(SignalColor color){
         for(Lanes l: lanes){
             l.setColor(color);
         }

@@ -49,9 +49,9 @@ public class Coordinator implements Runnable {
         }
         curSequence = lightSequences.NORTH_SOUTH_TURN;
         northSouth.setRoads(north_south);
-        northSouth.setLightColor(SignalColor.RED);
+        northSouth.setAllLights(SignalColor.RED);
         eastWest.setRoads(east_west);
-        eastWest.setLightColor(SignalColor.RED);
+        eastWest.setAllLights(SignalColor.RED);
 
         while(running) {
             // Timing Mode Logic
