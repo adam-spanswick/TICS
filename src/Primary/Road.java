@@ -6,7 +6,7 @@ public class Road {
 
     private ArrayList<Lanes> lanes = new ArrayList<>();
     private SignalColor lightColor;
-    private final int YELLOW_LIGHT_LENGTH = 1;
+    private final int YELLOW_LIGHT_LENGTH = 2;
 
     public void setRoads(ArrayList<Lanes> lanes){
         this.lanes = lanes;

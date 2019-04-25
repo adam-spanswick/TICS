@@ -16,8 +16,8 @@ public class Coordinator implements Runnable {
     private Boolean running = true;
     private Boolean noEmergency;
     private lightSequences curSequence;
-    private final int TURN_LIGHT_LENGTH = 3;
-    private final int  STRAIGHT_LIGHT_LENGTH = 5;
+    private final int TURN_LIGHT_LENGTH = 4;
+    private final int  STRAIGHT_LIGHT_LENGTH = 7;
     private final int TIME_BETWEEN_SEQS = 1;
     // opticom receiver object
     // inductive loop object
