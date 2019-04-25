@@ -37,15 +37,32 @@ public class Road {
     }
 
     public void straightLightOn(){
+        // Set Stop Lights
         setStraightLightColor(SignalColor.GREEN);
+
+        //Set Crosswalks
+        setCrosswalks(SignalColor.GREEN);
     }
 
     public void straightLightOff(){
+        // turn crosswalks to don't walk
+        setCrosswalks(SignalColor.RED);
+
         // turn lights yellow
         setStraightLightColor(SignalColor.YELLOW);
         waitLength(YELLOW_LIGHT_LENGTH);
         // turn lights red
         setStraightLightColor(SignalColor.RED);
+    }
+
+    private void setCrosswalks(SignalColor color){
+        if(lanes.get(1).toString().contains("N")) {
+            Lights.EAST.setColor(color);
+            Lights.WEST.setColor(color);
+        }else{
+            Lights.NORTH.setColor(color);
+            Lights.SOUTH.setColor(color);
+        }
     }
 
     private void setStraightLightColor(SignalColor color){
