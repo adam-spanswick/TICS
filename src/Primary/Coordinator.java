@@ -25,7 +25,11 @@ public class Coordinator implements Runnable {
     private Road northSouth;
     // Road 2 object
     private Road eastWest;
-
+    private void waitlength(int seconds){
+        try {
+            Thread.sleep(seconds * 1000);
+        }catch (InterruptedException e){}
+    }
     @Override
     public void run() {
 
