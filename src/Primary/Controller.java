@@ -18,7 +18,7 @@ public class Controller extends Thread{
 
     private Simulation sim;
     private GraphicsContext gc;
-    private TestTCS test;
+    private Coordinator test;
 
     public volatile static int threadCount = 0; // used to see how many threads need to move before draw update
     public static final Object countLock = new Object(); // Used to lock the threadCount when changed
@@ -46,8 +46,10 @@ public class Controller extends Thread{
             Animation a = new Animation();
             a.start();
 
-            this.test = new TestTCS();
-            test.testBegin();
+            Thread t = new Thread(test = new Coordinator());
+            t.start();
+            //this.test = new TestTCS();
+            //test.testBegin();
         }
         catch (Exception e)
         {
