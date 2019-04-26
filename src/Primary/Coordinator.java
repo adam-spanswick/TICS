@@ -60,13 +60,13 @@ public class Coordinator implements Runnable {
     }
 
     private void waitlength(int seconds) {
-        int count = 1;
+        int count = 0;
         boolean curEmergency;
-        while (count < seconds) {
+        while (count < seconds*4) {
             curEmergency = setCurSequence(northSouth.checkForEmergancyVehicle(), true) ||
                     setCurSequence(eastWest.checkForEmergancyVehicle(), false);
             try {
-                Thread.sleep(1000);
+                Thread.sleep(250);
             } catch (InterruptedException e) {
             }
             if (curEmergency) {
@@ -97,7 +97,6 @@ public class Coordinator implements Runnable {
         while (running) {
             // Timing Mode Logic
             // If no opticom signal received or no emergency key detected => Enter normal mode
-            System.out.println(curSequence + " : " + noEmergency);
             if (noEmergency) {
                 sequence();
                 // Wait For Light Duration
