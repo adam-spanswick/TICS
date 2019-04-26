@@ -10,20 +10,22 @@ public class Road {
     }
 
     private ArrayList<Lanes> lanes = new ArrayList<>();
-    private SignalColor lightColor;
     private final int YELLOW_LIGHT_LENGTH = 2;
 
     public void setRoads(ArrayList<Lanes> lanes){
         this.lanes = lanes;
     }
+
     private void waitLength(int seconds){
         try {
             Thread.sleep(seconds * 1000);
         }catch (InterruptedException e){}
     }
+
     public boolean anyCarsInTurnLane(){
         return (lanes.get(0).isCarOnLane() || lanes.get(3).isCarOnLane());
     }
+
     public void turnLightOn(){
         setTurnLightColor(SignalColor.GREEN);
     }
@@ -31,15 +33,18 @@ public class Road {
     public void turnLightOff(){
         // turn lights yellow
         setTurnLightColor(SignalColor.YELLOW);
+
         waitLength(YELLOW_LIGHT_LENGTH);
+
         // turn lights red
         setTurnLightColor(SignalColor.RED);
     }
 
-    private void setTurnLightColor(SignalColor color){
+    public void setTurnLightColor(SignalColor color){
         lanes.get(0).setColor(color);
         lanes.get(3).setColor(color);
     }
+
     public emergency checkForEmergancyVehicle(){
         if(emergencyInStraight()){
             return emergency.STRAIGHT;
@@ -49,6 +54,7 @@ public class Road {
             return emergency.NONE;
         }
     }
+
     private boolean emergencyInStraight(){
         return lanes.get(1).getEmergencyOnLane() || lanes.get(2).getEmergencyOnLane() ||
                 lanes.get(4).getEmergencyOnLane() || lanes.get(5).getEmergencyOnLane();
@@ -72,7 +78,9 @@ public class Road {
 
         // turn lights yellow
         setStraightLightColor(SignalColor.YELLOW);
+
         waitLength(YELLOW_LIGHT_LENGTH);
+
         // turn lights red
         setStraightLightColor(SignalColor.RED);
     }
@@ -87,18 +95,16 @@ public class Road {
         }
     }
 
-    private void setStraightLightColor(SignalColor color){
+    public void setStraightLightColor(SignalColor color){
         lanes.get(1).setColor(color);
         lanes.get(2).setColor(color);
         lanes.get(4).setColor(color);
         lanes.get(5).setColor(color);
     }
 
-
     public void setAllLights(SignalColor color){
         for(Lanes l: lanes){
             l.setColor(color);
         }
     }
-
 }

@@ -54,6 +54,8 @@ public class Main extends Application {
         Button spawnCarButton = new Button("Spawn Car");
         Button spawnEmergencyButton = new Button("Spawn Emergency");
         Button spawnPedButton = new Button("Spawn Pedestrian");
+        Button sysFailButton = new Button("System Failure");
+        Button cancelSysFailButton = new Button("Cancel System Failure");
         Button resetButton = new Button("Reset");
 
         Label pedLabel = new Label("Ped Speed");
@@ -81,7 +83,8 @@ public class Main extends Application {
         spawnCarButton.setStyle("-fx-background-color: #ffffff;-fx-text-fill: #1f3d7a; -fx-border-radius: 2; -fx-border-width: 1; -fx-border-color: #1f3d7a; -fx-font: 13px Calibri;");
         spawnEmergencyButton.setStyle("-fx-background-color: #ffffff;-fx-text-fill: #1f3d7a; -fx-border-radius: 2; -fx-border-width: 1; -fx-border-color: #1f3d7a; -fx-font: 13px Calibri;");
         spawnPedButton.setStyle("-fx-background-color: #ffffff;-fx-text-fill: #1f3d7a; -fx-border-radius: 2; -fx-border-width: 1; -fx-border-color: #1f3d7a; -fx-font: 13px Calibri;");
-
+        sysFailButton.setStyle("-fx-background-color: #ffffff;-fx-text-fill: #1f3d7a; -fx-border-radius: 2; -fx-border-width: 1; -fx-border-color: #1f3d7a; -fx-font: 13px Calibri;");
+        cancelSysFailButton.setStyle("-fx-background-color: #ffffff;-fx-text-fill: #1f3d7a; -fx-border-radius: 2; -fx-border-width: 1; -fx-border-color: #1f3d7a; -fx-font: 13px Calibri;");
         resetButton.setStyle("-fx-background-color: #4775d1;-fx-text-fill: white; -fx-font: 14px Calibri;");
         walkFaster.setStyle("-fx-background-color: #4775d1;-fx-text-fill: white; -fx-font: 14px Calibri;");
         walkSlower.setStyle("-fx-background-color: #4775d1;-fx-text-fill: white; -fx-font: 14px Calibri;");
@@ -96,6 +99,8 @@ public class Main extends Application {
         spawnCarButton.setPrefSize(140, 30);
         spawnEmergencyButton.setPrefSize(140, 30);
         spawnPedButton.setPrefSize(140, 30);
+        sysFailButton.setPrefSize(140, 30);
+        cancelSysFailButton.setPrefSize(140, 30);
         resetButton.setPrefSize(140, 30);
 
         Controller controller = new Controller(gc);
@@ -121,6 +126,8 @@ public class Main extends Application {
         spawnCarButton.setOnMousePressed(e -> controller.spawnCar());
         spawnEmergencyButton.setOnMousePressed(e -> controller.spawnEmergency());
         spawnPedButton.setOnMousePressed(e -> controller.spawnPed());
+        sysFailButton.setOnMousePressed(e -> controller.sysFail());
+        cancelSysFailButton.setOnMousePressed(e -> controller.cancelSysFail());
         walkFaster.setOnMousePressed(e -> controller.walkFaster(true, pedSpeedVal));
         walkSlower.setOnMousePressed(e -> controller.walkFaster(false, pedSpeedVal));
         driveFaster.setOnMousePressed(e -> controller.driveFaster(true, carSpeedVal));
@@ -136,7 +143,7 @@ public class Main extends Application {
         carSpeedBox.getChildren().addAll(carLabel, carSpeedVal, driveFaster, driveSlower);
         pedSpeedBox.getChildren().addAll(pedLabel, pedSpeedVal, walkFaster, walkSlower);
         speedBox.getChildren().addAll(pedSpeedBox, carSpeedBox);
-        controlBox.getChildren().addAll(controlLabel, rushButton, heavyButton, moderateButton, lightButton, spawnCarButton, spawnEmergencyButton, spawnPedButton, resetButton, resultLabel, speedBox);
+        controlBox.getChildren().addAll(controlLabel, rushButton, heavyButton, moderateButton, lightButton, spawnCarButton, spawnEmergencyButton, spawnPedButton, sysFailButton, cancelSysFailButton, resetButton, resultLabel, speedBox);
         root.setRight(controlBox);
         root.setLeft(canvas);
 

@@ -191,7 +191,7 @@ public class Car extends Thread{
                 }
                 switchToIntersection();
             } else if (atCross){
-                if (carSignalDisplay.getColor() == SignalColor.GREEN) { // check if light is green
+                if (carSignalDisplay.getColor() == SignalColor.GREEN || carSignalDisplay.getColor() == SignalColor.BLACK) { // check if light is green
                     isMoving = true;
                 } else if (!triggered){ // trigger the lane sensor that we're waiting
                     onLaneSensor(true);

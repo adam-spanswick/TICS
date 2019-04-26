@@ -126,6 +126,18 @@ public class Controller extends Thread{
         sim.spawnPed();
     }
 
+    // Button press action for system failure
+    //
+    public void sysFail(){
+        test.setSysFail();
+    }
+
+    // Button press action to cancel system failure
+    //
+    public void cancelSysFail() {
+        test.cancelSysFail();
+    }
+
     // Button press action to remove all the traffic threads
     //
     public void reset(){
