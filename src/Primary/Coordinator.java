@@ -10,8 +10,7 @@ public class Coordinator implements Runnable {
         EAST_WEST_TURN,
         EAST_WEST
     }
-
-    private SignalColor north_south_color, east_west_color;
+    
     private ArrayList<Lanes> north_south = new ArrayList<>();
     private ArrayList<Lanes> east_west = new ArrayList<>();
     private Boolean running = true;
@@ -122,8 +121,9 @@ public class Coordinator implements Runnable {
                 northSouth.turnLightOn();
 
                 // Wait For Light Duration
-                waitlength(TURN_LIGHT_LENGTH);
-
+                while(northSouth.checkForEmergancyVehicle() == Road.emergency.TURN) {
+                    waitlength(TURN_LIGHT_LENGTH);
+                }
                 // Turn Light to Yellow then Red
                 northSouth.turnLightOff();
 
@@ -135,7 +135,9 @@ public class Coordinator implements Runnable {
                 northSouth.straightLightOn();
 
                 // Wait For Light Duration
-                waitlength(STRAIGHT_LIGHT_LENGTH);
+                while(northSouth.checkForEmergancyVehicle() == Road.emergency.STRAIGHT) {
+                    waitlength(STRAIGHT_LIGHT_LENGTH);
+                }
 
                 // Straight Lights Yellow then Red
                 northSouth.straightLightOff();
@@ -146,7 +148,9 @@ public class Coordinator implements Runnable {
                 eastWest.turnLightOn();
 
                 // Wait For Light Duration
-                waitlength(TURN_LIGHT_LENGTH);
+                while(eastWest.checkForEmergancyVehicle() == Road.emergency.TURN) {
+                    waitlength(TURN_LIGHT_LENGTH);
+                }
 
                 // Turn Light to Yellow then Red
                 eastWest.turnLightOff();
@@ -159,7 +163,9 @@ public class Coordinator implements Runnable {
                 eastWest.straightLightOn();
 
                 // Wait For Light Duration
-                waitlength(STRAIGHT_LIGHT_LENGTH);
+                while(eastWest.checkForEmergancyVehicle() == Road.emergency.STRAIGHT) {
+                    waitlength(STRAIGHT_LIGHT_LENGTH);
+                }
 
                 // Straight Lights Yellow then Red
                 eastWest.straightLightOff();
