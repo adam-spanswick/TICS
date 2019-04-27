@@ -7,7 +7,7 @@ import Primary.SignalColor;
 import java.util.ArrayList;
 
 public class TICS implements Runnable {
-    private enum lightSequences {
+    public enum lightSequences {
         NORTH_SOUTH_TURN,
         NORTH_SOUTH,
         EAST_WEST_TURN,
@@ -18,16 +18,15 @@ public class TICS implements Runnable {
     private ArrayList<Lanes> east_west = new ArrayList<>();
     private Boolean noEmergency;
     private Boolean SysFail;
+    private OpticomController opticomController;
     private lightSequences curSequence;
-    private final int TURN_LIGHT_LENGTH = 4;
-    private final int STRAIGHT_LIGHT_LENGTH = 7;
-    private final int TIME_BETWEEN_SEQS = 1;
-    private final int SYSTEM_FAIL_TIME = 3;
     private Road northSouth = new Road();
     private Road eastWest = new Road();
+    private Constants constants;
 
     @Override
     public void run() {
+        constants = new Constants();
         noEmergency = true;
         SysFail = false;
 
@@ -45,6 +44,7 @@ public class TICS implements Runnable {
         northSouth.setAllLights(SignalColor.RED);
         eastWest.setRoads(east_west);
         eastWest.setAllLights(SignalColor.RED);
+        opticomController = new OpticomController(northSouth,eastWest);
 
         // Normal, Emergency Vehicle, and System Failure Timing Plans
         while (true) {
@@ -53,24 +53,24 @@ public class TICS implements Runnable {
                 normalSequence();
 
                 // Wait For Light Duration
-                waitLength(TIME_BETWEEN_SEQS);
+                waitLength(constants.TIME_BETWEEN_SEQS);
 
                 setCurSequence(northSouth.checkForEmergancyVehicle(), true);
                 setCurSequence(eastWest.checkForEmergancyVehicle(), false);
             } else{
                 if (!noEmergency && !SysFail){
                     System.out.println("Emergency Vehicle Timing Plan");
-                    emergencyVehicleSeq();
+                    curSequence = opticomController.runSequence(curSequence);
 
                     noEmergency = true;
 
                     // Wait For Light Duration
-                    waitLength(TIME_BETWEEN_SEQS);
+                    waitLength(constants.TIME_BETWEEN_SEQS);
                 }
                 if(SysFail){
                     System.out.println("System Failure Timing Plan");
                     systemFailSeq();
-                    waitLength(TIME_BETWEEN_SEQS);
+                    waitLength(constants.TIME_BETWEEN_SEQS);
                 }
             }
         }
@@ -146,25 +146,25 @@ public class TICS implements Runnable {
         eastWest.setStraightLightColor(SignalColor.YELLOW);
         eastWest.setTurnLightColor(SignalColor.YELLOW);
 
-        waitLength(SYSTEM_FAIL_TIME);
+        waitLength(constants.SYSTEM_FAIL_TIME);
         if(!SysFail){return;}
 
         northSouth.setStraightLightColor(SignalColor.BLACK);
         northSouth.setTurnLightColor(SignalColor.BLACK);
 
-        waitLength(SYSTEM_FAIL_TIME);
+        waitLength(constants.SYSTEM_FAIL_TIME);
         if(!SysFail){return;}
 
         northSouth.setStraightLightColor(SignalColor.YELLOW);
         northSouth.setTurnLightColor(SignalColor.YELLOW);
 
-        waitLength(SYSTEM_FAIL_TIME);
+        waitLength(constants.SYSTEM_FAIL_TIME);
         if(!SysFail){return;}
 
         eastWest.setStraightLightColor(SignalColor.BLACK);
         eastWest.setTurnLightColor(SignalColor.BLACK);
 
-        waitLength(SYSTEM_FAIL_TIME);
+        waitLength(constants.SYSTEM_FAIL_TIME);
     }
 
     /**
@@ -192,70 +192,6 @@ public class TICS implements Runnable {
         curSequence = lightSequences.NORTH_SOUTH_TURN;
     }
 
-    /**
-     * emergencyVehicleSeq puts the TICS into the emergency vehicle timing plan.
-     */
-    private void emergencyVehicleSeq() {
-        switch (curSequence) {
-            case NORTH_SOUTH_TURN:
-                // Turn Light To Green
-                northSouth.turnLightOn();
-
-                // Wait For Light Duration
-                while(northSouth.checkForEmergancyVehicle() == Road.emergency.TURN) {
-                    waitLength(TURN_LIGHT_LENGTH);
-                }
-                // Turn Light to Yellow then Red
-                northSouth.turnLightOff();
-
-                // Set Next Sequence
-                curSequence = lightSequences.NORTH_SOUTH;
-                break;
-            case NORTH_SOUTH:
-                // Straight Lights to Green
-                northSouth.straightLightOn();
-
-                // Wait For Light Duration
-                while(northSouth.checkForEmergancyVehicle() == Road.emergency.STRAIGHT) {
-                    waitLength(STRAIGHT_LIGHT_LENGTH);
-                }
-
-                // Straight Lights Yellow then Red
-                northSouth.straightLightOff();
-                curSequence = lightSequences.EAST_WEST_TURN;
-                break;
-            case EAST_WEST_TURN:
-                // Turn Light To Green
-                eastWest.turnLightOn();
-
-                // Wait For Light Duration
-                while(eastWest.checkForEmergancyVehicle() == Road.emergency.TURN) {
-                    waitLength(TURN_LIGHT_LENGTH);
-                }
-
-                // Turn Light to Yellow then Red
-                eastWest.turnLightOff();
-
-                // Set Next Sequence
-                curSequence = lightSequences.EAST_WEST;
-                break;
-            case EAST_WEST:
-                // Straight Lights to Green
-                eastWest.straightLightOn();
-
-                // Wait For Light Duration
-                while(eastWest.checkForEmergancyVehicle() == Road.emergency.STRAIGHT) {
-                    waitLength(STRAIGHT_LIGHT_LENGTH);
-                }
-
-                // Straight Lights Yellow then Red
-                eastWest.straightLightOff();
-                curSequence = lightSequences.NORTH_SOUTH_TURN;
-                break;
-            default:
-                System.out.println("Emergency Vehicle Timing Plan Sequence missing");
-        }
-    }
 
     /**
      * normalSequence puts the TICS into the normal operation timing plan.
@@ -268,7 +204,7 @@ public class TICS implements Runnable {
                     northSouth.turnLightOn();
 
                     // Wait For Light Duration
-                    waitLength(TURN_LIGHT_LENGTH);
+                    waitLength(constants.TURN_LIGHT_LENGTH);
 
                     // Turn Light to Yellow then Red
                     northSouth.turnLightOff();
@@ -282,7 +218,7 @@ public class TICS implements Runnable {
                 northSouth.straightLightOn();
 
                 // Wait For Light Duration
-                waitLength(STRAIGHT_LIGHT_LENGTH);
+                waitLength(constants.STRAIGHT_LIGHT_LENGTH);
 
                 // Straight Lights Yellow then Red
                 northSouth.straightLightOff();
@@ -294,7 +230,7 @@ public class TICS implements Runnable {
                     eastWest.turnLightOn();
 
                     // Wait For Light Duration
-                    waitLength(TURN_LIGHT_LENGTH);
+                    waitLength(constants.TURN_LIGHT_LENGTH);
 
                     // Turn Light to Yellow then Red
                     eastWest.turnLightOff();
@@ -308,7 +244,7 @@ public class TICS implements Runnable {
                 eastWest.straightLightOn();
 
                 // Wait For Light Duration
-                waitLength(STRAIGHT_LIGHT_LENGTH);
+                waitLength(constants.STRAIGHT_LIGHT_LENGTH);
 
                 // Straight Lights Yellow then Red
                 eastWest.straightLightOff();
