@@ -184,8 +184,6 @@ public class TICS implements Runnable {
         noEmergency = true;
         SysFail = false;
 
-        waitLength(SYSTEM_FAIL_TIME);
-
         northSouth.setStraightLightColor(SignalColor.RED);
         northSouth.setTurnLightColor(SignalColor.RED);
         eastWest.setStraightLightColor(SignalColor.RED);
