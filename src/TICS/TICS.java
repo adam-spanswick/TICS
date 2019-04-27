@@ -1,4 +1,7 @@
-package Primary;
+package TICS;
+
+import Primary.Lanes;
+import Primary.SignalColor;
 
 import java.util.ArrayList;
 
@@ -147,21 +150,25 @@ public class TICS implements Runnable {
         eastWest.setTurnLightColor(SignalColor.YELLOW);
 
         waitLength(SYSTEM_FAIL_TIME);
+        if (!sysFail){ return; }
 
         northSouth.setStraightLightColor(SignalColor.BLACK);
         northSouth.setTurnLightColor(SignalColor.BLACK);
 
         waitLength(SYSTEM_FAIL_TIME);
+        if (!sysFail){ return; }
 
         northSouth.setStraightLightColor(SignalColor.YELLOW);
         northSouth.setTurnLightColor(SignalColor.YELLOW);
 
         waitLength(SYSTEM_FAIL_TIME);
+        if (!sysFail){ return; }
 
         eastWest.setStraightLightColor(SignalColor.BLACK);
         eastWest.setTurnLightColor(SignalColor.BLACK);
 
         waitLength(SYSTEM_FAIL_TIME);
+        if (!sysFail){ return; }
     }
 
     /**

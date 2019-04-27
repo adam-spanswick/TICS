@@ -1,6 +1,7 @@
 package Primary;
 
 import Graphics.Simulation;
+import TICS.TICS;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
