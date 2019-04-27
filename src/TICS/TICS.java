@@ -20,8 +20,8 @@ public class TICS implements Runnable {
     private Boolean SysFail;
     private OpticomController opticomController;
     private lightSequences curSequence;
-    private Road northSouth = new Road();
-    private Road eastWest = new Road();
+    private RoadController northSouth = new RoadController();
+    private RoadController eastWest = new RoadController();
     private Constants constants;
 
     @Override

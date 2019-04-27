@@ -1,10 +1,10 @@
 package TICS;
 
 public class OpticomController {
-    private Road northSouth, eastWest;
+    private RoadController northSouth, eastWest;
     private Constants constants;
     private OpticomReceiver northSouthLanes, eastWestLanes;
-    public OpticomController(Road northSouth, Road eastWest){
+    public OpticomController(RoadController northSouth, RoadController eastWest){
         this.northSouth = northSouth;
         this.eastWest = eastWest;
         constants = new Constants();

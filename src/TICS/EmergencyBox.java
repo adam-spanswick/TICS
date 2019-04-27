@@ -1,9 +1,9 @@
 package TICS;
 
 public class EmergencyBox {
-    private Road northSouth, eastWest;
+    private RoadController northSouth, eastWest;
     private Constants constants;
-    public EmergencyBox(Road northSouth, Road eastWest){
+    public EmergencyBox(RoadController northSouth, RoadController eastWest){
         this.northSouth = northSouth;
         this.eastWest = eastWest;
         constants = new Constants();

@@ -6,7 +6,7 @@ import Primary.SignalColor;
 
 import java.util.ArrayList;
 
-public class Road {
+public class RoadController {
 
     private ArrayList<Lanes> lanes = new ArrayList<>();
     private Light light;
