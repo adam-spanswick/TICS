@@ -8,6 +8,14 @@ public class OpticomController {
         this.eastWest = eastWest;
         constants = new Constants();
     }
+
+    /**
+     *
+     * @param curSequence
+     * @param emergency
+     * @param isNorthSouth
+     * @return
+     */
     private TICS.lightSequences setCurSequence(TICS.lightSequences curSequence, Road.emergency emergency, boolean isNorthSouth) {
         TICS.lightSequences newSequence;
         switch (emergency) {
@@ -31,6 +39,12 @@ public class OpticomController {
         }
         return newSequence;
     }
+
+    /**
+     *
+     * @param curSequence
+     * @return
+     */
     public TICS.lightSequences checkForEmergency(TICS.lightSequences curSequence){
         curSequence = setCurSequence(curSequence,northSouth.checkForEmergancyVehicle(), true);
         curSequence = setCurSequence(curSequence,eastWest.checkForEmergancyVehicle(), false);
@@ -102,6 +116,10 @@ public class OpticomController {
         return curSequence;
     }
 
+    /**
+     * 
+     * @param seconds
+     */
     private void waitLength(int seconds) {
         try {
             Thread.sleep(seconds * 1000);
