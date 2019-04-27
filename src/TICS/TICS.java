@@ -59,7 +59,7 @@ public class TICS implements Runnable {
             } else{
                 if (!noEmergency && !SysFail){
                     System.out.println("Emergency Vehicle Timing Plan");
-                    curSequence = opticomController.runSequence(curSequence);
+                    runEmergencySequence();
 
                     noEmergency = true;
 
@@ -76,12 +76,79 @@ public class TICS implements Runnable {
     }
 
     /**
-     *
-     * @param emergency
-     * @param isNorthSouth
-     * @return
+     * emergencyVehicleSeq puts the TICS into the emergency vehicle timing plan.
      */
+    public void  runEmergencySequence(){
+        switch (curSequence) {
+            case NORTH_SOUTH_TURN:
+                // Turn Light To Green
+                northSouth.turnLightOn();
 
+                // Wait For Light Duration
+                while(opticomController.isEmergencyVehicleInLane(curSequence)) {
+                    waitLength(constants.EMERGENCY_VEHICLE_LIGHT_LENGTH);
+                }
+                // Turn Light to Yellow then Red
+                northSouth.turnLightOff();
+
+                // Set Next Sequence
+                curSequence = TICS.lightSequences.NORTH_SOUTH;
+                break;
+            case NORTH_SOUTH:
+                // Straight Lights to Green
+                northSouth.straightLightOn();
+
+                // Wait For Light Duration
+                while(opticomController.isEmergencyVehicleInLane(curSequence)) {
+                    waitLength(constants.EMERGENCY_VEHICLE_LIGHT_LENGTH);
+                }
+
+                // Straight Lights Yellow then Red
+                northSouth.straightLightOff();
+                curSequence = TICS.lightSequences.EAST_WEST_TURN;
+                break;
+            case EAST_WEST_TURN:
+                // Turn Light To Green
+                eastWest.turnLightOn();
+
+                // Wait For Light Duration
+                while(opticomController.isEmergencyVehicleInLane(curSequence)) {
+                    waitLength(constants.EMERGENCY_VEHICLE_LIGHT_LENGTH);
+                }
+
+                // Turn Light to Yellow then Red
+                eastWest.turnLightOff();
+
+                // Set Next Sequence
+                curSequence = TICS.lightSequences.EAST_WEST;
+                break;
+            case EAST_WEST:
+                // Straight Lights to Green
+                eastWest.straightLightOn();
+
+                // Wait For Light Duration
+                while(opticomController.isEmergencyVehicleInLane(curSequence)) {
+                    waitLength(constants.EMERGENCY_VEHICLE_LIGHT_LENGTH);
+                }
+
+                // Straight Lights Yellow then Red
+                eastWest.straightLightOff();
+                curSequence = TICS.lightSequences.NORTH_SOUTH_TURN;
+                break;
+            default:
+                System.out.println("Emergency Vehicle Timing Plan Sequence missing");
+        }
+    }
+
+    private void waitLength(double seconds) {
+        int time = (int)(seconds * 1000);
+
+        try {
+            Thread.sleep(time);
+        } catch (InterruptedException e) {
+
+        }
+    }
 
     /**
      * waitLength determines how long the systems should wait when changing light phases, crosswalk phases, roads
