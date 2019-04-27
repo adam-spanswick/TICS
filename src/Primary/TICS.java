@@ -2,7 +2,7 @@ package Primary;
 
 import java.util.ArrayList;
 
-public class Coordinator implements Runnable {
+public class TICS implements Runnable {
     private enum lightSequences {
         NORTH_SOUTH_TURN,
         NORTH_SOUTH,
@@ -12,8 +12,9 @@ public class Coordinator implements Runnable {
     
     private ArrayList<Lanes> north_south = new ArrayList<>();
     private ArrayList<Lanes> east_west = new ArrayList<>();
-    private Boolean noEmergency;
-    private Boolean SysFail;
+    private Boolean emergency;
+    private Boolean sysFail;
+    private Boolean normal;
     private lightSequences curSequence;
     private final int TURN_LIGHT_LENGTH = 4;
     private final int STRAIGHT_LIGHT_LENGTH = 7;
@@ -24,8 +25,9 @@ public class Coordinator implements Runnable {
 
     @Override
     public void run() {
-        noEmergency = true;
-        SysFail = true;
+        emergency = false;
+        sysFail = false;
+        normal = true;
 
         // Initialize Roads
         for (Lanes l : Lanes.values()) {
@@ -44,7 +46,7 @@ public class Coordinator implements Runnable {
 
         // Normal, Emergency Vehicle, and System Failure Timing Plans
         while (true) {
-            if (noEmergency && SysFail) {
+            if (normal) {
                 System.out.println("Normal Operation Timing Plan");
                 normalSequence();
 
@@ -54,16 +56,16 @@ public class Coordinator implements Runnable {
                 setCurSequence(northSouth.checkForEmergancyVehicle(), true);
                 setCurSequence(eastWest.checkForEmergancyVehicle(), false);
             } else{
-                if (noEmergency){
+                if (emergency){
                     System.out.println("Emergency Vehicle Timing Plan");
                     emergencyVehicleSeq();
 
-                    noEmergency = true;
+                    emergency = false;
 
                     // Wait For Light Duration
                     waitLength(TIME_BETWEEN_SEQS);
                 }
-                if(SysFail){
+                if(sysFail){
                     System.out.println("System Failure Timing Plan");
                     systemFailSeq();
                     waitLength(TIME_BETWEEN_SEQS);
@@ -126,7 +128,9 @@ public class Coordinator implements Runnable {
             }
 
             if (curEmergency) {
-                noEmergency = false;
+                if(!sysFail){
+                    emergency = true;
+                }
                 break;
             }
             count++;
@@ -165,8 +169,9 @@ public class Coordinator implements Runnable {
      */
     public void setSysFail(){
         System.out.println("System Failure Detected");
-        noEmergency = false;
-        SysFail = true;
+//        emergency = false;
+        sysFail = true;
+        normal = false;
     }
 
     /**
@@ -174,8 +179,9 @@ public class Coordinator implements Runnable {
      */
     public void cancelSysFail() {
         System.out.println("TICS back online");
-        noEmergency = true;
-        SysFail = true;
+//        emergency = true;
+        sysFail = false;
+        normal = true;
 
         waitLength(SYSTEM_FAIL_TIME);
 
@@ -315,7 +321,7 @@ public class Coordinator implements Runnable {
     }
 
     public static void main(String[] args) {
-        Coordinator sim = new Coordinator();
+        TICS sim = new TICS();
         sim.run();
     }
 }
