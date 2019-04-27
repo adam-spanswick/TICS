@@ -88,6 +88,7 @@ public class TICS implements Runnable {
                 while(opticomController.isEmergencyVehicleInLane(curSequence)) {
                     waitLength(constants.EMERGENCY_VEHICLE_LIGHT_LENGTH);
                 }
+                waitLength(constants.EMERGENCY_VEHICLE_LIGHT_LENGTH*2);
                 // Turn Light to Yellow then Red
                 northSouth.turnLightOff();
 
@@ -102,7 +103,7 @@ public class TICS implements Runnable {
                 while(opticomController.isEmergencyVehicleInLane(curSequence)) {
                     waitLength(constants.EMERGENCY_VEHICLE_LIGHT_LENGTH);
                 }
-
+                waitLength(constants.EMERGENCY_VEHICLE_LIGHT_LENGTH*2);
                 // Straight Lights Yellow then Red
                 northSouth.straightLightOff();
                 curSequence = TICS.lightSequences.EAST_WEST_TURN;
@@ -115,7 +116,7 @@ public class TICS implements Runnable {
                 while(opticomController.isEmergencyVehicleInLane(curSequence)) {
                     waitLength(constants.EMERGENCY_VEHICLE_LIGHT_LENGTH);
                 }
-
+                waitLength(constants.EMERGENCY_VEHICLE_LIGHT_LENGTH*2);
                 // Turn Light to Yellow then Red
                 eastWest.turnLightOff();
 
@@ -130,7 +131,7 @@ public class TICS implements Runnable {
                 while(opticomController.isEmergencyVehicleInLane(curSequence)) {
                     waitLength(constants.EMERGENCY_VEHICLE_LIGHT_LENGTH);
                 }
-
+                waitLength(constants.EMERGENCY_VEHICLE_LIGHT_LENGTH*2);
                 // Straight Lights Yellow then Red
                 eastWest.straightLightOff();
                 curSequence = TICS.lightSequences.NORTH_SOUTH_TURN;
