@@ -1,6 +1,7 @@
 package Primary;
 
 import Graphics.Simulation;
+import TICS.TICS;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
@@ -18,7 +19,7 @@ public class Controller extends Thread{
 
     private Simulation sim;
     private GraphicsContext gc;
-    private Coordinator test;
+    private TICS test;
 
     public volatile static int threadCount = 0; // used to see how many threads need to move before draw update
     public static final Object countLock = new Object(); // Used to lock the threadCount when changed
@@ -46,7 +47,7 @@ public class Controller extends Thread{
             Animation a = new Animation();
             a.start();
 
-            Thread t = new Thread(test = new Coordinator());
+            Thread t = new Thread(test = new TICS());
             t.start();
             //this.test = new TestTCS();
             //test.testBegin();
