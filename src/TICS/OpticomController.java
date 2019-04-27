@@ -8,6 +8,34 @@ public class OpticomController {
         this.eastWest = eastWest;
         constants = new Constants();
     }
+    private TICS.lightSequences setCurSequence(TICS.lightSequences curSequence, Road.emergency emergency, boolean isNorthSouth) {
+        TICS.lightSequences newSequence;
+        switch (emergency) {
+            case STRAIGHT:
+                if (isNorthSouth) {
+                    newSequence = TICS.lightSequences.NORTH_SOUTH;
+                } else {
+                    newSequence = TICS.lightSequences.EAST_WEST;
+                }
+                break;
+            case TURN:
+                if (isNorthSouth) {
+                    newSequence = TICS.lightSequences.NORTH_SOUTH_TURN;
+                } else {
+                    newSequence = TICS.lightSequences.EAST_WEST_TURN;
+                }
+                break;
+            case NONE:
+            default:
+                newSequence = curSequence;
+        }
+        return newSequence;
+    }
+    public TICS.lightSequences checkForEmergency(TICS.lightSequences curSequence){
+        curSequence = setCurSequence(curSequence,northSouth.checkForEmergancyVehicle(), true);
+        curSequence = setCurSequence(curSequence,eastWest.checkForEmergancyVehicle(), false);
+        return curSequence;
+    }
     /**
      * emergencyVehicleSeq puts the TICS into the emergency vehicle timing plan.
      */

@@ -55,8 +55,7 @@ public class TICS implements Runnable {
                 // Wait For Light Duration
                 waitLength(constants.TIME_BETWEEN_SEQS);
 
-                setCurSequence(northSouth.checkForEmergancyVehicle(), true);
-                setCurSequence(eastWest.checkForEmergancyVehicle(), false);
+                curSequence = opticomController.checkForEmergency(curSequence);
             } else{
                 if (!noEmergency && !SysFail){
                     System.out.println("Emergency Vehicle Timing Plan");
@@ -82,35 +81,7 @@ public class TICS implements Runnable {
      * @param isNorthSouth
      * @return
      */
-    private boolean setCurSequence(Road.emergency emergency, boolean isNorthSouth) {
-        lightSequences newSequence;
-        switch (emergency) {
-            case STRAIGHT:
-                if (isNorthSouth) {
-                    newSequence = lightSequences.NORTH_SOUTH;
-                } else {
-                    newSequence = lightSequences.EAST_WEST;
-                }
-                break;
-            case TURN:
-                if (isNorthSouth) {
-                    newSequence = lightSequences.NORTH_SOUTH_TURN;
-                } else {
-                    newSequence = lightSequences.EAST_WEST_TURN;
-                }
-                break;
-            case NONE:
-                return false;
-            default:
-                return false;
-        }
-        if (newSequence == curSequence) {
-            return false;
-        } else {
-            curSequence = newSequence;
-            return true;
-        }
-    }
+
 
     /**
      * waitLength determines how long the systems should wait when changing light phases, crosswalk phases, roads
@@ -120,9 +91,15 @@ public class TICS implements Runnable {
     private void waitLength(int seconds) {
         int count = 0;
         boolean curEmergency;
+        lightSequences newSequence;
         while (count < seconds*4) {
-            curEmergency = setCurSequence(northSouth.checkForEmergancyVehicle(), true) ||
-                    setCurSequence(eastWest.checkForEmergancyVehicle(), false);
+            newSequence = opticomController.checkForEmergency(curSequence);
+            if(newSequence != curSequence){
+                curSequence = newSequence;
+                curEmergency = true;
+            }else{
+                curEmergency = false;
+            }
             try {
                 Thread.sleep(250);
             } catch (InterruptedException e) {
