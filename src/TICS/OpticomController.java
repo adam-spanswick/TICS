@@ -61,7 +61,7 @@ public class OpticomController {
 
                 // Wait For Light Duration
                 while(northSouth.checkForEmergancyVehicle() == Road.emergency.TURN) {
-                    waitLength(constants.TURN_LIGHT_LENGTH);
+                    waitLength(constants.EMERGENCY_VEHICLE_LIGHT_LENGTH);
                 }
                 // Turn Light to Yellow then Red
                 northSouth.turnLightOff();
@@ -75,7 +75,7 @@ public class OpticomController {
 
                 // Wait For Light Duration
                 while(northSouth.checkForEmergancyVehicle() == Road.emergency.STRAIGHT) {
-                    waitLength(constants.STRAIGHT_LIGHT_LENGTH);
+                    waitLength(constants.EMERGENCY_VEHICLE_LIGHT_LENGTH);
                 }
 
                 // Straight Lights Yellow then Red
@@ -88,7 +88,7 @@ public class OpticomController {
 
                 // Wait For Light Duration
                 while(eastWest.checkForEmergancyVehicle() == Road.emergency.TURN) {
-                    waitLength(constants.TURN_LIGHT_LENGTH);
+                    waitLength(constants.EMERGENCY_VEHICLE_LIGHT_LENGTH);
                 }
 
                 // Turn Light to Yellow then Red
@@ -103,7 +103,7 @@ public class OpticomController {
 
                 // Wait For Light Duration
                 while(eastWest.checkForEmergancyVehicle() == Road.emergency.STRAIGHT) {
-                    waitLength(constants.STRAIGHT_LIGHT_LENGTH);
+                    waitLength(constants.EMERGENCY_VEHICLE_LIGHT_LENGTH);
                 }
 
                 // Straight Lights Yellow then Red
@@ -117,7 +117,7 @@ public class OpticomController {
     }
 
     /**
-     * 
+     *
      * @param seconds
      */
     private void waitLength(int seconds) {

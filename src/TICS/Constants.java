@@ -5,5 +5,6 @@ public class Constants {
     public final int STRAIGHT_LIGHT_LENGTH = 7;
     public final int TIME_BETWEEN_SEQS = 1;
     public final int SYSTEM_FAIL_TIME = 3;
+    public final int EMERGENCY_VEHICLE_LIGHT_LENGTH = 1;
     public Constants(){}
 }
