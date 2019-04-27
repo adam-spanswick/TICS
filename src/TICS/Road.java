@@ -7,11 +7,6 @@ import Primary.SignalColor;
 import java.util.ArrayList;
 
 public class Road {
-    public enum emergency{
-        STRAIGHT,
-        TURN,
-        NONE
-    }
 
     private ArrayList<Lanes> lanes = new ArrayList<>();
     private Light light;
@@ -74,24 +69,9 @@ public class Road {
         return loop.anyCarsInTurnLane();
     }
 
-    // Opticom
-
-    public emergency checkForEmergancyVehicle(){
-        if(emergencyInStraight()){
-            return emergency.STRAIGHT;
-        }else if (emergencyInTurn()){
-            return emergency.TURN;
-        }else {
-            return emergency.NONE;
-        }
+    public ArrayList<Lanes> getLanes(){
+        return lanes;
     }
 
-    private boolean emergencyInStraight(){
-        return lanes.get(1).getEmergencyOnLane() || lanes.get(2).getEmergencyOnLane() ||
-                lanes.get(4).getEmergencyOnLane() || lanes.get(5).getEmergencyOnLane();
-    }
 
-    private boolean emergencyInTurn(){
-        return lanes.get(0).getEmergencyOnLane() || lanes.get(3).getEmergencyOnLane();
-    }
 }
