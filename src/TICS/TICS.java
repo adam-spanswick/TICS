@@ -1,8 +1,12 @@
-package Primary;
+package TICS;
+
+
+import Primary.Lanes;
+import Primary.SignalColor;
 
 import java.util.ArrayList;
 
-public class Coordinator implements Runnable {
+public class TICS implements Runnable {
     private enum lightSequences {
         NORTH_SOUTH_TURN,
         NORTH_SOUTH,
@@ -318,7 +322,7 @@ public class Coordinator implements Runnable {
     }
 
     public static void main(String[] args) {
-        Coordinator sim = new Coordinator();
+        TICS sim = new TICS();
         sim.run();
     }
 }
