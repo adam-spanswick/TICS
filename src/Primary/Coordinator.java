@@ -25,7 +25,7 @@ public class Coordinator implements Runnable {
     @Override
     public void run() {
         noEmergency = true;
-        SysFail = true;
+        SysFail = false;
 
         // Initialize Roads
         for (Lanes l : Lanes.values()) {
@@ -44,7 +44,7 @@ public class Coordinator implements Runnable {
 
         // Normal, Emergency Vehicle, and System Failure Timing Plans
         while (true) {
-            if (noEmergency && SysFail) {
+            if (noEmergency && !SysFail) {
                 System.out.println("Normal Operation Timing Plan");
                 normalSequence();
 
@@ -54,7 +54,7 @@ public class Coordinator implements Runnable {
                 setCurSequence(northSouth.checkForEmergancyVehicle(), true);
                 setCurSequence(eastWest.checkForEmergancyVehicle(), false);
             } else{
-                if (noEmergency){
+                if (!noEmergency && !SysFail){
                     System.out.println("Emergency Vehicle Timing Plan");
                     emergencyVehicleSeq();
 
@@ -143,16 +143,19 @@ public class Coordinator implements Runnable {
         eastWest.setTurnLightColor(SignalColor.YELLOW);
 
         waitLength(SYSTEM_FAIL_TIME);
+        if(!SysFail){return;}
 
         northSouth.setStraightLightColor(SignalColor.BLACK);
         northSouth.setTurnLightColor(SignalColor.BLACK);
 
         waitLength(SYSTEM_FAIL_TIME);
+        if(!SysFail){return;}
 
         northSouth.setStraightLightColor(SignalColor.YELLOW);
         northSouth.setTurnLightColor(SignalColor.YELLOW);
 
         waitLength(SYSTEM_FAIL_TIME);
+        if(!SysFail){return;}
 
         eastWest.setStraightLightColor(SignalColor.BLACK);
         eastWest.setTurnLightColor(SignalColor.BLACK);
@@ -165,7 +168,7 @@ public class Coordinator implements Runnable {
      */
     public void setSysFail(){
         System.out.println("System Failure Detected");
-        noEmergency = false;
+        noEmergency = true;
         SysFail = true;
     }
 
@@ -175,7 +178,7 @@ public class Coordinator implements Runnable {
     public void cancelSysFail() {
         System.out.println("TICS back online");
         noEmergency = true;
-        SysFail = true;
+        SysFail = false;
 
         waitLength(SYSTEM_FAIL_TIME);
 
