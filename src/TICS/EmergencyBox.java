@@ -11,6 +11,7 @@ public class EmergencyBox {
     public boolean checkForEmergancy(){
         return false;
     }
+
     public void runSequence(){
 
     }

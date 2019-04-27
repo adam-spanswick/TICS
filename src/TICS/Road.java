@@ -14,40 +14,67 @@ public class Road {
     }
 
     private ArrayList<Lanes> lanes = new ArrayList<>();
-    private final int YELLOW_LIGHT_LENGTH = 2;
+    private Light light;
+    private Crosswalk xWalk;
+    private InductionLoop loop;
 
     public void setRoads(ArrayList<Lanes> lanes){
         this.lanes = lanes;
+        setLights();
+        setCrosswalks();
+        setLoop();
     }
 
-    private void waitLength(int seconds){
-        try {
-            Thread.sleep(seconds * 1000);
-        }catch (InterruptedException e){}
+    public void setLights(){
+        light = new Light(lanes);
     }
 
-    public boolean anyCarsInTurnLane(){
-        return (lanes.get(0).isCarOnLane() || lanes.get(3).isCarOnLane());
+    public void setCrosswalks(){
+        xWalk = new Crosswalk(lanes);
     }
 
+    public void setLoop(){
+        loop = new InductionLoop(lanes);
+    }
+
+    // Lights
     public void turnLightOn(){
-        setTurnLightColor(SignalColor.GREEN);
+        light.turnLightOn();
     }
 
     public void turnLightOff(){
-        // turn lights yellow
-        setTurnLightColor(SignalColor.YELLOW);
+        light.turnLightOff();
+    }
 
-        waitLength(YELLOW_LIGHT_LENGTH);
-
-        // turn lights red
-        setTurnLightColor(SignalColor.RED);
+    public void setAllLights(SignalColor color){
+        light.setAllLights(color);
     }
 
     public void setTurnLightColor(SignalColor color){
-        lanes.get(0).setColor(color);
-        lanes.get(3).setColor(color);
+        light.setTurnLightColor(color);
     }
+
+    public void straightLightOn(){
+        light.straightLightOn();
+        xWalk.setCrosswalks(SignalColor.GREEN);
+    }
+
+    public void straightLightOff(){
+        xWalk.setCrosswalks(SignalColor.RED);
+        light.straightLightOff();
+    }
+
+    public void setStraightLightColor(SignalColor color){
+        light.setStraightLightColor(color);
+    }
+
+    // Induction Loops
+
+    public boolean anyCarsInTurnLane(){
+        return loop.anyCarsInTurnLane();
+    }
+
+    // Opticom
 
     public emergency checkForEmergancyVehicle(){
         if(emergencyInStraight()){
@@ -66,49 +93,5 @@ public class Road {
 
     private boolean emergencyInTurn(){
         return lanes.get(0).getEmergencyOnLane() || lanes.get(3).getEmergencyOnLane();
-    }
-
-    public void straightLightOn(){
-        // Set Stop Lights
-        setStraightLightColor(SignalColor.GREEN);
-
-        //Set Crosswalks
-        setCrosswalks(SignalColor.GREEN);
-    }
-
-    public void straightLightOff(){
-        // turn crosswalks to don't walk
-        setCrosswalks(SignalColor.RED);
-
-        // turn lights yellow
-        setStraightLightColor(SignalColor.YELLOW);
-
-        waitLength(YELLOW_LIGHT_LENGTH);
-
-        // turn lights red
-        setStraightLightColor(SignalColor.RED);
-    }
-
-    private void setCrosswalks(SignalColor color){
-        if(lanes.get(1).toString().contains("N")) {
-            Lights.EAST.setColor(color);
-            Lights.WEST.setColor(color);
-        }else{
-            Lights.NORTH.setColor(color);
-            Lights.SOUTH.setColor(color);
-        }
-    }
-
-    public void setStraightLightColor(SignalColor color){
-        lanes.get(1).setColor(color);
-        lanes.get(2).setColor(color);
-        lanes.get(4).setColor(color);
-        lanes.get(5).setColor(color);
-    }
-
-    public void setAllLights(SignalColor color){
-        for(Lanes l: lanes){
-            l.setColor(color);
-        }
     }
 }
