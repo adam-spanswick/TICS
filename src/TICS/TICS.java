@@ -1,12 +1,11 @@
 package TICS;
 
-
 import Primary.Lanes;
 import Primary.SignalColor;
-
 import java.util.ArrayList;
 
 public class TICS implements Runnable {
+
     public enum lightSequences {
         NORTH_SOUTH_TURN,
         NORTH_SOUTH,
@@ -52,7 +51,6 @@ public class TICS implements Runnable {
                 System.out.println("Normal Operation Timing Plan");
                 normalSequence();
 
-                // Wait For Light Duration
                 waitLength(constants.TIME_BETWEEN_SEQS);
 
                 curSequence = opticomController.checkForEmergency(curSequence);
@@ -63,7 +61,6 @@ public class TICS implements Runnable {
 
                     noEmergency = true;
 
-                    // Wait For Light Duration
                     waitLength(constants.TIME_BETWEEN_SEQS);
                 }
                 if(SysFail){
@@ -141,6 +138,11 @@ public class TICS implements Runnable {
         }
     }
 
+    /**
+     * waitLength determines how long the systems should wait when changing light phases, crosswalk phases, roads
+     * and checks for emergency vehicle signals.
+     * @param seconds time to wait
+     */
     private void waitLength(double seconds) {
         int time = (int)(seconds * 1000);
 

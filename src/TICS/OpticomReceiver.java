@@ -4,15 +4,18 @@ import Primary.Lanes;
 import java.util.ArrayList;
 
 public class OpticomReceiver {
+
     public enum emergency{
         STRAIGHT,
         TURN,
         NONE
     }
     private ArrayList<Lanes> lanes;
+
     public OpticomReceiver(ArrayList<Lanes> lanes){
         this.lanes = lanes;
     }
+
     public emergency checkForEmergencyVehicle(){
         if(emergencyInStraight()){
             return emergency.STRAIGHT;

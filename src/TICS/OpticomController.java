@@ -4,6 +4,7 @@ public class OpticomController {
     private RoadController northSouth, eastWest;
     private Constants constants;
     private OpticomReceiver northSouthLanes, eastWestLanes;
+
     public OpticomController(RoadController northSouth, RoadController eastWest){
         this.northSouth = northSouth;
         this.eastWest = eastWest;
@@ -26,6 +27,7 @@ public class OpticomController {
                     return false;
         }
     }
+
     /**
      *
      * @param curSequence
