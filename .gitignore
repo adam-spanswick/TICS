@@ -1,6 +1,7 @@
 out/
 .idea/
 *.iml
+META-INF/
 
 # Compiled class file
 *.class
@@ -15,8 +16,6 @@ out/
 .mtj.tmp/
 
 # Package Files #
-*.jar
-*.war
 *.nar
 *.ear
 *.zip
